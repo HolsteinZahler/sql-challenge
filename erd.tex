@@ -1,0 +1,171 @@
+\documentclass[border=0.25in]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
+
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+
+\makeatletter
+\pgfarrowsdeclare{crow's foot}{crow's foot}
+{
+  \pgfarrowsleftextend{+-.5\pgflinewidth}%
+  \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+  \pgfutil@tempdima=0.5pt%
+  \advance\pgfutil@tempdima by.25\pgflinewidth%
+  \pgfsetdash{}{+0pt}%
+  \pgfsetmiterjoin%
+  \pgfpathmoveto{\pgfqpoint{0pt}{-6\pgfutil@tempdima}}%
+  \pgfpathlineto{\pgfqpoint{-6\pgfutil@tempdima}{0pt}}%
+  \pgfpathlineto{\pgfqpoint{0pt}{6\pgfutil@tempdima}}%
+  \pgfusepathqstroke%
+}
+
+
+\tikzset{
+    entity/.code={
+        \tikzset{
+            name=#1,
+            inner sep=0pt,
+            every entity/.try,
+            fill=white,
+            general shadow={
+                shadow xshift=0.0625in,
+                shadow yshift=-0.0625in,
+                opacity=0.5,
+                fill=black!50
+            }
+        }%
+        \def\entityname{#1}%
+    },
+    entity anchor/.style={matrix anchor=#1.center},
+    every entity/.style={
+            draw,
+    },
+    every property/.style={
+        inner xsep=0.25cm, inner ysep=0.125cm, anchor=west, text width=1in
+    },
+    zig zag to/.style={
+        to path={(\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)}
+    },
+    zig zag to/.default=0.5,
+    one to many/.style={
+        -crow's foot, zig zag to
+    },
+    many to one/.style={
+        crow's foot-, zig zag to
+    },
+    many to many/.style={
+        crow's foot-crow's foot, zig zag to
+    },
+    one to one/.style={
+    	zig zag to
+    }
+}
+\def\property#1{\node[name=\entityname-#1, every property/.try]{#1};}
+\def\properties{\begingroup\catcode`\_=11\relax\processproperties}
+\def\processproperties#1{\endgroup%
+    \def\propertycode{}%
+    \foreach \p in {#1}{%
+        \expandafter\expandafter\expandafter\gdef\expandafter\expandafter\expandafter\propertycode%
+            \expandafter\expandafter\expandafter{\expandafter\propertycode\expandafter\property\expandafter{\p}\\}%
+    }%
+    \propertycode%
+}
+
+\def\entitynamenode#1{%
+\node[every entity name/.try] (\entityname-name) {#1};
+\draw (\entityname-name.south west) -- (\entityname-name.south east);
+\\[1ex]
+}
+\tikzset{
+  every entity name/.style={every property/.try, align=center}
+}
+
+\begin{document}
+
+\begin{tikzpicture}[every node/.style={font=\sffamily}, node distance=1.25in]
+\matrix [entity=departments] {
+	\entitynamenode{departments}    
+    \properties{
+        dept_no, 
+        dept_name
+    }
+};
+
+\matrix [entity={salaries}, above right=4.5cm and 3cm of departments, entity anchor=salaries-emp_no]  {
+	\entitynamenode{salaries}
+    \properties{
+        emp_no, 
+        salary,
+        from_date,
+        to_date,
+    }
+};
+
+\matrix [entity={dept-emp}, below right=2cm and -1cm of salaries, entity anchor=dept-emp-emp_no]  {
+	\entitynamenode{dept{\_}emp}
+    \properties{
+        emp_no, 
+        dept_no, 
+        from_date, 
+        to_date
+    }
+};
+
+\matrix [entity={employees}, right=of dept-emp, entity anchor=employees-emp_no]  {
+	\entitynamenode{employees}
+    \properties{
+        emp_no, 
+        birthdate,
+        first_name,
+        last_name,
+        gender,
+        hire_date,
+    }
+};
+
+\matrix [entity={title}, above=of employees, entity anchor=title-emp_no]  {
+	\entitynamenode{title}
+    \properties{
+        emp_no, 
+        title,
+        from_date,
+        to_date,
+    }
+};
+
+\matrix [entity={dept-manager}, above=of departments, entity anchor=dept-manager-emp_no]  {
+	\entitynamenode{dept{\_}manager}
+    \properties{
+    	dept_no,
+        emp_no,
+        from_date,
+        to_date,
+    }
+};
+
+
+
+\draw [one to many] (departments-dept_no)   to (dept-emp-dept_no);
+\draw [many to one] (dept-emp-emp_no) to (employees-emp_no);
+\draw [one to many] (employees-emp_no.east) -- ++(1.0cm,0) |- (title-emp_no);
+%\draw [one to one]  (dept-emp-emp_no.west) -- ++(-1.0cm,0)  |- (salaries-emp_no.west)  ;
+\draw [one to one]  (dept-emp-emp_no.west) -- ++(-1.0cm,0) -- ++(0,1.5)  -- ++(4.2,0) |- (salaries-emp_no.east);
+\draw [one to one]  (dept-manager-emp_no) to (salaries-emp_no);
+\draw [one to many]  (departments-dept_no.west)  -- ++(-1.0cm,0) |- (dept-manager-dept_no.west);
+%\draw [many to one] (Sales-perkey)     to (Period-perkey);
+%\draw [one to many] (Market-mktkey)    to (Store-mktkey);
+%\draw [many to one] (Sales-storekey)   to (Store-storekey);
+%\draw [many to one] (Sales-promokey)   to (Promotion-promokey);
+
+\end{tikzpicture}
+
+\end{document}
