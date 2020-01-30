@@ -158,7 +158,7 @@
 \draw [many to one] (dept-emp-emp_no) to (employees-emp_no);
 \draw [one to many] (employees-emp_no.east) -- ++(1.0cm,0) |- (title-emp_no);
 %\draw [one to one]  (dept-emp-emp_no.west) -- ++(-1.0cm,0)  |- (salaries-emp_no.west)  ;
-\draw [one to one]  (dept-emp-emp_no.west) -- ++(-1.0cm,0) -- ++(0,1.5)  -- ++(4.2,0) |- (salaries-emp_no.east);
+\draw [many to one]  (dept-emp-emp_no.west) -- ++(-1.0cm,0) -- ++(0,1.5)  -- ++(4.2,0) |- (salaries-emp_no.east);
 \draw [one to one]  (dept-manager-emp_no) to (salaries-emp_no);
 \draw [one to many]  (departments-dept_no.west)  -- ++(-1.0cm,0) |- (dept-manager-dept_no.west);
 %\draw [many to one] (Sales-perkey)     to (Period-perkey);
