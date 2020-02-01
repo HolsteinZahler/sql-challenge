@@ -1,12 +1,13 @@
 -- Table schema
 
+DROP VIEW IF EXISTS dept_view;
+DROP VIEW IF EXISTS dept_view_current;
 DROP TABLE IF EXISTS dept_manager;
 DROP TABLE IF EXISTS titles;
 DROP TABLE IF EXISTS salaries;
 DROP TABLE IF EXISTS dept_emp;
 DROP TABLE IF EXISTS departments;
 DROP TABLE IF EXISTS employees;
-
 
 CREATE TABLE employees (
 	emp_no INT PRIMARY KEY,
@@ -16,8 +17,6 @@ CREATE TABLE employees (
 	gender VARCHAR(10),
 	hire_date date NOT NULL
 );
-
-
 
 SELECT * FROM employees LIMIT 10;
 
@@ -29,6 +28,7 @@ CREATE TABLE departments (
 SELECT * FROM departments LIMIT 10;
 
 CREATE TABLE dept_emp (
+	ID SERIAL PRIMARY KEY,
 	emp_no INT,
 	FOREIGN KEY (emp_no)
     REFERENCES employees (emp_no),
@@ -38,10 +38,13 @@ CREATE TABLE dept_emp (
 	to_date date NOT NULL
 );
 
+
+
 SELECT * FROM dept_emp LIMIT 10;
 
 
 CREATE TABLE salaries (
+	ID SERIAL PRIMARY KEY,
 	emp_no INT,
 	FOREIGN KEY (emp_no)
     REFERENCES employees (emp_no),
@@ -50,9 +53,12 @@ CREATE TABLE salaries (
 	to_date date NOT NULL
 );
 
+
+
 SELECT * FROM salaries LIMIT 10;
 
 CREATE TABLE titles (
+	ID SERIAL PRIMARY KEY,
 	emp_no INT,
 	FOREIGN KEY (emp_no)
     REFERENCES employees (emp_no),
@@ -64,6 +70,7 @@ CREATE TABLE titles (
 SELECT * FROM title LIMIT 10;
 
 CREATE TABLE dept_manager (
+	ID SERIAL PRIMARY KEY,
 	dept_no VARCHAR(10),
 	FOREIGN KEY (dept_no) REFERENCES departments (dept_no),
 	emp_no INT,
@@ -82,11 +89,12 @@ SELECT format('\copy %s C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\
 */
 
 /*
+psql command
 \copy employees FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\employees.csv' WITH DELIMITER ',' CSV HEADER;
 \copy departments FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\departments.csv' WITH DELIMITER ',' CSV HEADER;
-\copy dept_emp FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\dept_emp.csv' WITH DELIMITER ',' CSV HEADER;
-\copy dept_manager FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\dept_manager.csv' WITH DELIMITER ',' CSV HEADER;
-\copy salaries FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\salaries.csv' WITH DELIMITER ',' CSV HEADER;
-\copy titles FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\titles.csv' WITH DELIMITER ',' CSV HEADER;
+\copy dept_emp (emp_no,dept_no,from_date,to_date) FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\dept_emp.csv' WITH DELIMITER ',' CSV HEADER;
+\copy dept_manager (dept_no,emp_no,from_date,to_date) FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\dept_manager.csv' WITH DELIMITER ',' CSV HEADER;
+\copy salaries (emp_no,salary,from_date,to_date) FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\salaries.csv' WITH DELIMITER ',' CSV HEADER;
+\copy titles (emp_no,title,from_date,to_date) FROM 'C:\Users\Herman D Schaumburg\Documents\NU_Data_Bootcamp\Homework 7\sql-challenge\data\titles.csv' WITH DELIMITER ',' CSV HEADER;
 */
 
