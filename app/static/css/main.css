@@ -1,0 +1,37 @@
+
+.navbar{
+    background-color: #b2ffff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+body{
+    background-color: #C0C0C0;
+    /* 
+    background-image: url('../images/red-mirror-f303VzauP6w-unsplash.jpg');
+    background-repeat: no-repeat;
+   background-size: 1920px 1313px;
+    background-size: cover;*/
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #C0C0C0;
+  }
+  
+  .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #E0E0E0;
+  }
+
+.container{
+    height:100%;
+    
+}
+
+.codeDiv{
+        background-color: #32CD32;
+}
+
+pre, code{
+    white-space: pre-line;
+    margin-left: 20px;
+}
