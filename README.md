@@ -2,6 +2,10 @@
 
 ## Description
 
+Some ETL is performed in this project. A lightweight version of the data base and queries is deployed in Heroku via PostgreSQL database and flask app.
+
+[Deployed SQL Queries](https://sql-challenge-hz.herokuapp.com/ "Heroku Deployment")
+
 The SQL file `schema.sql` creates a schema of tables on information related to employees at a fictional company (See ERD below).  The other SQL file, `queries.sql`, runs several queries on the imported data tables.  Also included is a jupyter lab notebook, `fake_or_real.ipynb`, for generating a few plots from the data to see if it seems reasonable.  These may be found in the Plots section below.
 
 
