@@ -2,7 +2,7 @@
 
 ## Description
 
-Some ETL is performed in this project. A lightweight version of the data base and queries is deployed in Heroku via PostgreSQL database and flask app.
+Some ETL is performed in this project. A lightweight version of the database and queries is deployed in Heroku via PostgreSQL database and flask app.
 
 [Deployed SQL Queries](https://sql-challenge-hz.herokuapp.com/ "Heroku Deployment")
 
